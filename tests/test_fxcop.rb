@@ -5,16 +5,15 @@ class TestFxCop < Test::Unit::TestCase
 		fxcop_binary = '.\FxCopCmd.exe'
 		BuildQuality::FxCop.new(self, fxcop_binary: fxcop_binary).start	
 		assert_equal(fxcop_binary, @command)
-	end
+	end	
 
-	def test_when_fxcop_started_with_one_assembly_Then_command_contains_file_switched_assembly
-		assembly = 'c:\workspace\mydll1.dll'
+	def test_when_fxcop_started_with_two_assemblies_Then_command_contains_both_assemblies_as_files_switches
+		assembly1 = 'c:\workspace\mydll1.dll'
+		assembly2 = 'c:\workspace\mydll2.dll'
 		file_switch = '/f:'		
-		BuildQuality::FxCop.new(self, {}).start(assemblies: [assembly])
-		assert_equal(" #{file_switch}#{assembly}", @command)
+		BuildQuality::FxCop.new(self, {}).start(assemblies: [assembly1,assembly2])
+		assert_equal(" #{file_switch}#{assembly1} #{file_switch}#{assembly2}", @command)
 	end
-	
-
 
 	def execute(command)
 		@command = command
@@ -49,8 +48,12 @@ module BuildQuality
 	class FileCommandBuilder
 		FILE_SWITCH = "/f:"
 
-		def self.build(assemblies)
-			" #{FILE_SWITCH}#{assemblies[0]}" unless assemblies.nil?
+		def self.build(assemblies)			
+			assemblies = [] if assemblies.nil?			
+			file_commands = assemblies.map do | assembly |
+				" #{FILE_SWITCH}#{assembly}"
+			end						
+			file_commands.join			
 		end
 	end
 
