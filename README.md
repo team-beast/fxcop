@@ -1,0 +1,4 @@
+fxcop
+=====
+
+FxCop rake task
