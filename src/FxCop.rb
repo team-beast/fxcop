@@ -13,12 +13,13 @@ module BuildQuality
 	end
 
 	class FxCopSettings
-		attr_reader :assemblies, :output_file_name, :dictionary_file_name
+		attr_reader :assemblies, :output_file_name, :dictionary_file_name, :ruleset_file_name
 
 		def initialize(parameters = {})
 			@assemblies = parameters[:assemblies] || []
 			@output_file_name = parameters[:output_file_name]
 			@dictionary_file_name = parameters[:dictionary_file_name]
+			@ruleset_file_name = parameters[:ruleset_file_name]
 		end
 	end
 
@@ -28,7 +29,7 @@ module BuildQuality
 		end
 
 		def create
-			dictionary_file_name_adapter = DictionaryFileNameAdapter.new(@fxcop_command)		
+			dictionary_file_name_adapter = DictionaryFileNameAdapter.new(@fxcop_command, RulesetFileNameAdapter.new(@fxcop_command))		
 			assemblies_adapter = AssembliesAdapter.new(@fxcop_command, dictionary_file_name_adapter)
 			OutputFileNameAdapter.new(@fxcop_command, assemblies_adapter)
 		end
@@ -66,15 +67,28 @@ module BuildQuality
 		end
 	end
 
+	class RulesetFileNameAdapter
+		RULESET_SWITCH = " /rs:"
+		def initialize(fxcop_command)
+			@fxcop_command = fxcop_command
+		end
+		def adapt(fxcop_settings)
+			ruleset_file_name = fxcop_settings.ruleset_file_name
+			@fxcop_command.add_argument("#{RULESET_SWITCH}#{ruleset_file_name}") unless ruleset_file_name.nil?
+		end
+	end
+
 	class DictionaryFileNameAdapter
 		DICTIONARY_SWITCH = "/dic:"
-		def initialize(fxcop_command)
+		def initialize(fxcop_command, next_adapter)
+			@next_adapter = next_adapter
 			@fxcop_command = fxcop_command
 		end
 		def adapt(fxcop_settings)
 			dictionary_file_name = fxcop_settings.dictionary_file_name
 			dictionary_argument = " #{DICTIONARY_SWITCH}#{dictionary_file_name}" unless dictionary_file_name.nil?
 			@fxcop_command.add_argument(dictionary_argument)
+			@next_adapter.adapt(fxcop_settings)
 		end
 	end
 

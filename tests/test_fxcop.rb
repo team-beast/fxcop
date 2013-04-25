@@ -1,5 +1,6 @@
 require 'test/unit'
 require_relative '../src/FxCop'
+
 class TestFxCop < Test::Unit::TestCase
 	def test_when_started_with_no_arguments_Then_command_is_fxcop_binary	
 		fxcop_binary = '.\FxCopCmd.exe'
@@ -30,6 +31,14 @@ class TestFxCop < Test::Unit::TestCase
 		fxcop_settings = BuildQuality::FxCopSettings.new(dictionary_file_name: dictionary_file_name)
 		BuildQuality::FxCop.new(self, {}).start(fxcop_settings)
 		assert_equal(" #{dictionary_switch}#{dictionary_file_name}",@command)
+	end
+
+	def test_when_fxcop_started_with_custom_ruleset_provided_Then_command_contains_ruleset_switch
+		ruleset_file_name = "myruleset.ruleset"
+		ruleset_switch = '/rs:' 
+		fxcop_settings = BuildQuality::FxCopSettings.new(ruleset_file_name: ruleset_file_name)
+		BuildQuality::FxCop.new(self, {}).start(fxcop_settings)
+		assert_equal(" #{ruleset_switch}#{ruleset_file_name}",@command)
 	end
 
 	def execute(command)
