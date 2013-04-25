@@ -11,14 +11,16 @@ class TestFxCop < Test::Unit::TestCase
 		assembly1 = 'c:\workspace\mydll1.dll'
 		assembly2 = 'c:\workspace\mydll2.dll'
 		file_switch = '/f:'		
-		BuildQuality::FxCop.new(self, {}).start(assemblies: [assembly1,assembly2])
+		fxcop_settings = BuildQuality::FxCopSettings.new(assemblies: [assembly1,assembly2])
+		BuildQuality::FxCop.new(self, {}).start(fxcop_settings)
 		assert_equal(" #{file_switch}#{assembly1} #{file_switch}#{assembly2}", @command)
 	end
 
 	def test_when_fxcop_started_with_out_file_name_provided_Then_command_contains_output_file_with_output_switch
 		output_file_name = "fred.xml"
 		output_switch = '/o:' 
-		BuildQuality::FxCop.new(self, {}).start(output_file_name: output_file_name)
+		fxcop_settings = BuildQuality::FxCopSettings.new(output_file_name: output_file_name)
+		BuildQuality::FxCop.new(self, {}).start(fxcop_settings)
 		assert_equal(" #{output_switch}#{output_file_name}",@command)
 	end
 
@@ -31,29 +33,57 @@ module BuildQuality
 	class FxCop
 		def initialize(shell_command = ShellCommand.new, parameters)	
 			fxcop_binary = parameters[:fxcop_binary]
-			@fxcop_command = FxCopCommand.new(fxcop_binary,shell_command)
+			@fxcop_command = FxCopCommand.new(fxcop_binary,shell_command)			
+			@fxCop_arguments_factory = FxCopArgumentsFactory.new
+		end
+
+		def start(fxcop_settings = FxCopSettings.new)									
+			fxcop_arguments = @fxCop_arguments_factory.create(fxcop_settings)
+			@fxcop_command.execute(fxcop_arguments)
+		end		
+	end
+
+	class FxCopSettings
+		attr_reader :assemblies, :output_file_name
+
+		def initialize(parameters = {})
+			@assemblies = parameters[:assemblies]
+			@output_file_name = parameters[:output_file_name]
+		end
+	end
+
+	class FxCopArgumentsFactory
+		def initialize
 			@output_argument_builder = OutputArgumentBuilder.new
 			@file_arguments_builder = FileArgumentsBuilder.new
 		end
 
-		def start(parameters = {})						
-			file_command = @file_arguments_builder.build(parameters[:assemblies])
-			output_command = @output_argument_builder.build(parameters[:output_file_name])
-			@fxcop_command.execute(file_command,output_command)
+		def create(fxcop_settings)
+			file_arguments = @file_arguments_builder.build(fxcop_settings.assemblies)
+			output_argument = @output_argument_builder.build(fxcop_settings.output_file_name)
+			fxcop_arguments = FxCopArguments.new(file_arguments, output_argument)	
 		end
 	end
 
-	class FxCopCommand
-		
+	class FxCopCommand		
 		def initialize(fxcop_binary,shell_command)
 			@fxcop_binary = fxcop_binary
 			@shell_command = shell_command
 		end
 
-		def execute(file_command,output_command)			
-			fxcop_command = "#{@fxcop_binary}#{file_command}#{output_command}"			
+		def execute(fxcop_arguments)			
+			fxcop_command = "#{@fxcop_binary}#{fxcop_arguments.file_arguments}#{fxcop_arguments.output_argument}"			
 			@shell_command.execute(fxcop_command)
 		end		
+	end
+
+	class FxCopArguments
+		attr_reader :file_arguments, :output_argument
+
+		def initialize(file_arguments, output_argument)
+			@file_arguments = file_arguments
+			@output_argument = output_argument
+		end
 	end
 
 	class OutputArgumentBuilder		
