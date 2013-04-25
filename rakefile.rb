@@ -18,8 +18,7 @@ end
 desc 'Committing and Pushing to Git'
 task :commit do	
 	require 'git_repository'
-	commit_message = ENV["m"] || 'no commit message'
-	p commit_message
+	commit_message = ENV["m"] || 'no commit message'	
 	git = GitRepository.new
 	git.add
 	git.commit(:message => commit_message)
