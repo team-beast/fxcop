@@ -24,6 +24,14 @@ class TestFxCop < Test::Unit::TestCase
 		assert_equal(" #{output_switch}#{output_file_name}",@command)
 	end
 
+	def test_when_fxcop_started_with_custom_dictionary_provided_Then_command_contains_custom_dictionary_switch
+		dictionary_file_name = "mydictionary.txt"
+		dictionary_switch = '/dic:' 
+		fxcop_settings = BuildQuality::FxCopSettings.new(dictionary_file_name: dictionary_file_name)
+		BuildQuality::FxCop.new(self, {}).start(fxcop_settings)
+		assert_equal(" #{dictionary_switch}#{dictionary_file_name}",@command)
+	end
+
 	def execute(command)
 		@command = command
 	end
