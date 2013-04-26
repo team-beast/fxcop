@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'FileUtils'
-require_relative '../src/FxCop'
+require_relative '../lib/fxcop'
 
 class TestFxCop < Test::Unit::TestCase
 	OUTPUT_FILE_NAME = File.expand_path("./lib/output.xml")

@@ -1,7 +1,7 @@
 require 'test/unit'
 
-require_relative '../src/fxcop_raketask'
-
+# require_relative '../lib/fxcop_raketask'
+require 'fxcop_raketask'
 class TestFxCop < Test::Unit::TestCase
 	require 'rake'
 	OUTPUT_FILE_NAME = "output.xml"

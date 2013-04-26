@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative '../src/FxCop'
+require_relative '../lib/fxcop'
 
 class TestFxCop < Test::Unit::TestCase
 
