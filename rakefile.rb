@@ -11,7 +11,7 @@ task :unit_tests do
 	TEST_FILE_PATTERN = 'tests/**/*.rb'
 	Dir[TEST_FILE_PATTERN].peach do | test_file_name |
 		puts ">> Running tests on: #{test_file_name}"
-		system "ruby #{test_file_name}"
+		sh "ruby #{test_file_name}"
 	end
 end
 
@@ -19,7 +19,7 @@ task :integration_tests do
 	FileUtils.cd("./integration")
 	INTEGRATION_FILE_PATTERN = './**/*.rb'
 	Dir[INTEGRATION_FILE_PATTERN].each do | integration_file_name |
-		system "ruby #{integration_file_name}"
+		sh "ruby #{integration_file_name}"
 	end
 end
 
