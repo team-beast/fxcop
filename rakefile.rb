@@ -1,4 +1,4 @@
-task :default => [:dependencies, :unit_tests, :integration_tests, :commit]
+task :default => [:dependencies, :unit_tests, :commit]
 
 desc 'Load dependencies with bundler'
 task :dependencies do
