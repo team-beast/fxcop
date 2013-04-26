@@ -13,13 +13,14 @@ module BuildQuality
 	end
 
 	class FxCopSettings
-		attr_reader :assemblies, :output_file_name, :dictionary_file_name, :ruleset_file_name
+		attr_reader :assemblies, :output_file_name, :dictionary_file_name, :ruleset_file_name, :culture
 
 		def initialize(parameters = {})
 			@assemblies = parameters[:assemblies] || []
 			@output_file_name = parameters[:output_file_name]
 			@dictionary_file_name = parameters[:dictionary_file_name]
 			@ruleset_file_name = parameters[:ruleset_file_name]
+			@culture = parameters[:culture]
 		end
 	end
 
@@ -29,7 +30,9 @@ module BuildQuality
 		end
 
 		def create
-			dictionary_file_name_adapter = DictionaryFileNameAdapter.new(@fxcop_command, RulesetFileNameAdapter.new(@fxcop_command))		
+			culture_adapter = CultureAdapter.new(@fxcop_command)
+			ruleset_file_name_adapter =  RulesetFileNameAdapter.new(@fxcop_command,culture_adapter)
+			dictionary_file_name_adapter = DictionaryFileNameAdapter.new(@fxcop_command,ruleset_file_name_adapter)		
 			assemblies_adapter = AssembliesAdapter.new(@fxcop_command, dictionary_file_name_adapter)
 			OutputFileNameAdapter.new(@fxcop_command, assemblies_adapter)
 		end
@@ -67,14 +70,28 @@ module BuildQuality
 		end
 	end
 
-	class RulesetFileNameAdapter
-		RULESET_SWITCH = " /rs:"
+	class CultureAdapter
+		CULTURE_SWITCH = ' /cul:'
 		def initialize(fxcop_command)
 			@fxcop_command = fxcop_command
+		end
+
+		def adapt(fxcop_settings)
+			culture = fxcop_settings.culture
+			@fxcop_command.add_argument("#{CULTURE_SWITCH}#{culture}") unless fxcop_settings.culture.nil?
+		end
+	end
+
+	class RulesetFileNameAdapter
+		RULESET_SWITCH = " /rs:="
+		def initialize(fxcop_command, next_adapter)
+			@fxcop_command = fxcop_command
+			@next_adapter = next_adapter
 		end
 		def adapt(fxcop_settings)
 			ruleset_file_name = fxcop_settings.ruleset_file_name
 			@fxcop_command.add_argument("#{RULESET_SWITCH}#{ruleset_file_name}") unless ruleset_file_name.nil?
+			@next_adapter.adapt(fxcop_settings)
 		end
 	end
 

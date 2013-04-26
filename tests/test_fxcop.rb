@@ -2,6 +2,7 @@ require 'test/unit'
 require_relative '../src/FxCop'
 
 class TestFxCop < Test::Unit::TestCase
+
 	def test_when_started_with_no_arguments_Then_command_is_fxcop_binary	
 		fxcop_binary = '.\FxCopCmd.exe'
 		BuildQuality::FxCop.new(self, fxcop_binary: fxcop_binary).start	
@@ -35,11 +36,20 @@ class TestFxCop < Test::Unit::TestCase
 
 	def test_when_fxcop_started_with_custom_ruleset_provided_Then_command_contains_ruleset_switch
 		ruleset_file_name = "myruleset.ruleset"
-		ruleset_switch = '/rs:' 
+		ruleset_switch = '/rs:=' 
 		fxcop_settings = BuildQuality::FxCopSettings.new(ruleset_file_name: ruleset_file_name)
 		BuildQuality::FxCop.new(self, {}).start(fxcop_settings)
 		assert_equal(" #{ruleset_switch}#{ruleset_file_name}",@command)
 	end
+
+	def test_when_fxcop_started_with_culture_provided_Then_command_contains_culture_switch
+		culture_type = 'en-gb'
+		culture_switch = '/cul:' 
+		fxcop_settings = BuildQuality::FxCopSettings.new(culture: culture_type)
+		BuildQuality::FxCop.new(self, {}).start(fxcop_settings)
+		assert_equal(" #{culture_switch}#{culture_type}",@command)
+	end
+
 
 	def execute(command)
 		@command = command
