@@ -1,8 +1,0 @@
-fxcop :run_fxcop do |configuration|
-	configuration.fxcop_binary = 'C:\workspace\playpit\FxCop\FxCopCmd.exe'
-	configuration.assemblies = [File.expand_path("FxCopDirtyDLL.dll")]
-	configuration.output_file_name = File.expand_path("output.xml")
-	configuration.dictionary_file_name = File.expand_path("CustomDictionary.xml")
-	configuration.ruleset_file_name = File.expand_path("testruleset.ruleset")
-	configuration.culture = 'en-gb'
-end

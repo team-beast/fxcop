@@ -1,9 +1,0 @@
-<RuleSet Name="Test Rules"
-         Description="Rules that should be run on my assemblies."
-         ToolsVersion="10.0">
-  <IncludeAll Action="Error" />
-  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Design">
-    <Rule Id="CA2210" Action="None" />
-  </Rules>
-</RuleSet>
-
