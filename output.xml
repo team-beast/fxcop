@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\workspace\playpit\fxcop\Xml\FxCopReport.xsl"?>
+<FxCopReport Version="10.0">
+ <Localized>
+  <String Key="Category">Category</String>
+  <String Key="Certainty">Certainty</String>
+  <String Key="CollapseAll">Collapse All</String>
+  <String Key="CheckId">Check Id</String>
+  <String Key="Error">Error</String>
+  <String Key="Errors">error(s)</String>
+  <String Key="ExpandAll">Expand All</String>
+  <String Key="Help">Help</String>
+  <String Key="Line">Line</String>
+  <String Key="Messages">message(s)</String>
+  <String Key="LocationNotStoredInPdb">[Location not stored in Pdb]</String>
+  <String Key="Project">Project</String>
+  <String Key="Resolution">Resolution</String>
+  <String Key="Rule">Rule</String>
+  <String Key="RuleFile">Rule File</String>
+  <String Key="RuleDescription">Rule Description</String>
+  <String Key="Source">Source</String>
+  <String Key="Status">Status</String>
+  <String Key="Target">Target</String>
+  <String Key="Warning">Warning</String>
+  <String Key="Warnings">warning(s)</String>
+  <String Key="ReportTitle">Code Analysis Report</String>
+ </Localized>
+ <Exceptions>
+  <Exception Keyword="CA0055" Kind="AssemblyLoad">
+   <Type>Microsoft.FxCop.Common.AssemblyLoadException</Type>
+   <ExceptionMessage>* Could not load file: 'C:/workspace/fxcop/bin/FxCopSpellingErrorDll.dll'.</ExceptionMessage>
+   <InnerType>System.IO.DirectoryNotFoundException</InnerType>
+   <InnerExceptionMessage>Could not find a part of the path 'C:\workspace\fxcop\bin'.</InnerExceptionMessage>
+   <InnerStackTrace>   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.Directory.GetFiles(String path, String searchPattern)
+   at Microsoft.FxCop.Command.FxCopCommand.GetFileList(String filePath)
+   at Microsoft.FxCop.Command.FxCopCommand.ProcessFileArguments(ArgumentDictionary argumentDictionary)</InnerStackTrace>
+  </Exception>
+  <Exception Keyword="CA0052" Kind="Engine">
+   <Type>Microsoft.FxCop.Sdk.FxCopException</Type>
+   <ExceptionMessage>No targets were selected.</ExceptionMessage>
+  </Exception>
+  <Exception Keyword="CA0063" Kind="Engine" TreatAsWarning="True">
+   <Type>Microsoft.FxCop.Sdk.FxCopException</Type>
+   <ExceptionMessage>* Failed to load rule set file 'C:/workspace/fxcop/lib/testruleset.ruleset' or one of its dependent rule set files. </ExceptionMessage>
+  </Exception>
+ </Exceptions>
+</FxCopReport>

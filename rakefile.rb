@@ -1,4 +1,4 @@
-task :default => [:dependencies, :unit_tests, :commit]
+task :default => [:dependencies, :unit_tests, :integration_tests, :commit]
 
 desc 'Load dependencies with bundler'
 task :dependencies do
@@ -15,12 +15,21 @@ task :unit_tests do
 	end
 end
 
+task :integration_tests do
+	require 'peach'
+	INTEGRATION_FILE_PATTERN = 'integration/**/*.rb'
+	Dir[INTEGRATION_FILE_PATTERN].peach do | integration_file_name |
+		puts ">> Running tests on: #{integration_file_name}"
+		system "ruby #{integration_file_name}"
+	end
+end
+
 desc 'Committing and Pushing to Git'
 task :commit do	
 	require 'git_repository'
 	commit_message = ENV["m"] || 'no_commit_message'	
 	git = GitRepository.new
 	git.add
-	git.commit(:message => commit_message)
+	git.commit(:message => commit_message,:options => "-a")
 	git.push	
 end
