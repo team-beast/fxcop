@@ -16,9 +16,10 @@ task :unit_tests do
 end
 
 task :integration_tests do
+	require 'peach'
 	FileUtils.cd("./integration")
 	INTEGRATION_FILE_PATTERN = './**/*.rb'
-	Dir[INTEGRATION_FILE_PATTERN].each do | integration_file_name |
+	Dir[INTEGRATION_FILE_PATTERN].peach do | integration_file_name |
 		sh "ruby #{integration_file_name}"
 	end
 end

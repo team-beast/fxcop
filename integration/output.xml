@@ -12,7 +12,7 @@
          <Members>
           <Member Name="#Sumop(System.Int32,System.Int32)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message Id="Sumop" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Active" Created="2013-04-26 13:08:59Z" FixCategory="Breaking">
+            <Message Id="Sumop" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Active" Created="2013-04-26 13:09:35Z" FixCategory="Breaking">
              <Issue Name="Member" Certainty="75" Level="CriticalWarning">Correct the spelling of 'Sumop' in member name 'SpellingError.Sumop(int, int)' or remove it entirely if it represents any sort of Hungarian notation.</Issue>
             </Message>
            </Messages>
