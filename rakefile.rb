@@ -1,4 +1,4 @@
-task :default => [:dependencies, :unit_tests, :commit]
+task :default => [:dependencies, :unit_tests, :integration_tests, :commit]
 
 desc 'Load dependencies with bundler'
 task :dependencies do
@@ -16,9 +16,8 @@ task :unit_tests do
 end
 
 task :integration_tests do
-	require 'peach'
 	INTEGRATION_FILE_PATTERN = 'integration/**/*.rb'
-	Dir[INTEGRATION_FILE_PATTERN].peach do | integration_file_name |
+	Dir[INTEGRATION_FILE_PATTERN].each do | integration_file_name |
 		puts ">> Running tests on: #{integration_file_name}"
 		system "ruby #{integration_file_name}"
 	end
