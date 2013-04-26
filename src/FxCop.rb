@@ -1,6 +1,7 @@
 module BuildQuality
 	class FxCop
 		def initialize(shell_command = ShellCommand.new, parameters)	
+			parameters[:fxcop_binary]
 			fxcop_binary = parameters[:fxcop_binary]
 			@fxcop_command = FxCopCommand.new(fxcop_binary,shell_command)	
 			@fxcop_settings_adapter = FxCopSettingsAdapterFactory.new(@fxcop_command).create

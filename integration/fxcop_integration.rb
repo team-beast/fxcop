@@ -3,14 +3,14 @@ require 'FileUtils'
 require_relative '../src/FxCop'
 
 class TestFxCop < Test::Unit::TestCase
-	OUTPUT_FILE_NAME = File.expand_path("output.xml")
-	DICTIONARY_FILE_NAME = File.expand_path("CustomDictionary.xml")
+	OUTPUT_FILE_NAME = File.expand_path("./lib/output.xml")
+	DICTIONARY_FILE_NAME = File.expand_path("./lib/CustomDictionary.xml")
 	FXCOP_BINARY = 'C:\workspace\playpit\FxCop\FxCopCmd.exe'	
-	RULESET_FILE_NAME = File.expand_path("testruleset.ruleset")
+	RULESET_FILE_NAME = File.expand_path("./lib/testruleset.ruleset")
 	UK_CULTURE = 'en-gb'
 	def test_when_fxcop_run_against_clean_and_dirty_assembly_then_output_file_created
-		dirty_assembly = File.expand_path("FxCopDirtyDLL.dll")
-		clean_assembly = File.expand_path("FxCopCleanDLL.dll")
+		dirty_assembly = File.expand_path("./bin/FxCopDirtyDLL.dll")
+		clean_assembly = File.expand_path("./bin/FxCopCleanDLL.dll")
 		FileUtils.rm_f(OUTPUT_FILE_NAME)
 		fxcop_settings = BuildQuality::FxCopSettings.new(
 			assemblies: [dirty_assembly,clean_assembly],
@@ -21,7 +21,7 @@ class TestFxCop < Test::Unit::TestCase
 	end
 
 	def test_when_fxcop_run_against_clean_assembly_then_no_output_file_created
-		clean_assembly = File.expand_path("FxCopCleanDLL.dll")
+		clean_assembly = File.expand_path("./bin/FxCopCleanDLL.dll")
 		FileUtils.rm_f(OUTPUT_FILE_NAME)
 		fxcop_settings = BuildQuality::FxCopSettings.new(
 			assemblies: [clean_assembly],
@@ -32,7 +32,7 @@ class TestFxCop < Test::Unit::TestCase
 	end
 
 	def test_when_fxcop_run_against_dirty_assembly_then_output_file_created
-		dirty_assembly = File.expand_path("FxCopDirtyDLL.dll")
+		dirty_assembly = File.expand_path("./bin/FxCopDirtyDLL.dll")
 		FileUtils.rm_f(OUTPUT_FILE_NAME)
 		fxcop_settings = BuildQuality::FxCopSettings.new(
 			assemblies: [dirty_assembly],
@@ -43,7 +43,7 @@ class TestFxCop < Test::Unit::TestCase
 	end
 
 	def test_when_fxcop_run_against_spelling_error_assembly_without_dictionary_then_output_file_created
-		dirty_assembly = File.expand_path("FxCopSpellingErrorDll.dll")
+		dirty_assembly = File.expand_path("./bin/FxCopSpellingErrorDll.dll")
 		FileUtils.rm_f(OUTPUT_FILE_NAME)
 		fxcop_settings = BuildQuality::FxCopSettings.new(
 			assemblies: [dirty_assembly],
@@ -54,7 +54,7 @@ class TestFxCop < Test::Unit::TestCase
 	end
 
 	def test_when_fxcop_run_against_spelling_error_assembly_with_dictionary_then_output_file_not_created
-		dirty_assembly = File.expand_path("FxCopSpellingErrorDll.dll")
+		dirty_assembly = File.expand_path("./bin/FxCopSpellingErrorDll.dll")
 		FileUtils.rm_f(OUTPUT_FILE_NAME)
 		fxcop_settings = BuildQuality::FxCopSettings.new(
 			assemblies: [dirty_assembly],
@@ -66,7 +66,7 @@ class TestFxCop < Test::Unit::TestCase
 	end
 
 	def test_when_fxcop_run_against_spelling_error_with_ruleset_then_output_file_created
-		dirty_assembly = File.expand_path("FxCopSpellingErrorDll.dll")
+		dirty_assembly = File.expand_path("./bin/FxCopSpellingErrorDll.dll")
 		FileUtils.rm_f(OUTPUT_FILE_NAME)
 		fxcop_settings = BuildQuality::FxCopSettings.new(
 			assemblies: [dirty_assembly],
@@ -77,8 +77,8 @@ class TestFxCop < Test::Unit::TestCase
 		assert_equal(true, File.exists?(OUTPUT_FILE_NAME))
 	end
 
-	def test_Bob
-		uk_spelling_assembly = File.expand_path("FxCopUKSpellingDll.dll")
+	def test_when_fxcop_run_against_spelling_error_with_culture_then_output_file_not_created
+		uk_spelling_assembly = File.expand_path("./bin/FxCopUKSpellingDll.dll")
 		FileUtils.rm_f(OUTPUT_FILE_NAME)
 		fxcop_settings = BuildQuality::FxCopSettings.new(
 			assemblies: [uk_spelling_assembly],
