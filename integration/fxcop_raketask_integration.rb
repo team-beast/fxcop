@@ -37,7 +37,7 @@ class TestFxCop < Test::Unit::TestCase
 		end
 		
 		Rake::Task['clean'].invoke	
-		assert_equal(File.exists?(OUTPUT_FILE_NAME),false)
+		assert_equal(File.exists?(OUTPUT_FILE_NAME),true)
 	end
 
 	def test_when_fxcop_run_against_dirty_assembly_then_output_file_created
