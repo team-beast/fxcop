@@ -89,7 +89,6 @@ class TestFxCop < Test::Unit::TestCase
 		assert_equal(false, File.exists?(OUTPUT_FILE_NAME))
 	end
 	def execute(command)
-		puts command
 		BuildQuality::ShellCommand.new.execute(command)
 	end
 end
