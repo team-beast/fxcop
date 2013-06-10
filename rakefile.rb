@@ -25,7 +25,7 @@ task :integration_tests do
 	end
 end
 
-desc 'Committing and Pushing to Git'
+desc 'Committing and Pushing to Git :)'
 task :commit do	
 	require 'git_repository'
 	commit_message = ENV["m"] || 'no_commit_message'	
